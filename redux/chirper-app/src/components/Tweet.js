@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
 import TiHeartOutline from 'react-icons/lib/ti/heart-outline'
 import TiHeartFullOutline from 'react-icons/lib/ti/heart-full-outline'
+import { handleToggleTweetLike } from '../actions/tweets';
 
 class Tweet extends React.Component {
     toParent = (e) => {
@@ -12,6 +13,8 @@ class Tweet extends React.Component {
 
     handleLike = (e) => {
         console.log('We liked!');
+        const { id, authedUser, tweet } = this.props;
+        this.props.dispatch(handleToggleTweetLike({ id, authedUser, hasLiked: tweet.hasLiked }));
     }
 
     render() {
