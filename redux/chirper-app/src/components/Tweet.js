@@ -5,14 +5,15 @@ import TiArrowBackOutline from 'react-icons/lib/ti/arrow-back-outline'
 import TiHeartOutline from 'react-icons/lib/ti/heart-outline'
 import TiHeartFullOutline from 'react-icons/lib/ti/heart-full-outline'
 import { handleToggleTweetLike } from '../actions/tweets';
+import { Link, withRouter } from 'react-router-dom'
 
 class Tweet extends React.Component {
-    toParent = (e) => {
-        console.log('We went to parent!');
+    toParent = (e, id) => {
+        console.log('Going to parent, ID:', id)
+        this.props.history.push(`/tweet/${id}`);
     }
 
     handleLike = (e) => {
-        console.log('We liked!');
         const { id, authedUser, tweet } = this.props;
         this.props.dispatch(handleToggleTweetLike({ id, authedUser, hasLiked: tweet.hasLiked }));
     }
@@ -21,7 +22,7 @@ class Tweet extends React.Component {
         const { name, avatar, timestamp, text, hasLiked, likes, replies, parent } = this.props.tweet;
 
         return (
-            <div className='tweet'>
+            <Link to={`/tweet/${this.props.id}`} className='tweet'>
                 <img
                     src={avatar}
                     className='avatar'
@@ -48,7 +49,7 @@ class Tweet extends React.Component {
                         <span>{likes}</span>
                     </div>
                 </div>
-            </div>
+            </Link>
         );
     }
 }
@@ -65,4 +66,4 @@ const mapStateToProps = ({ authedUser, tweets, users }, { id }) => {
     };
 }
 
-export default connect(mapStateToProps)(Tweet);
+export default withRouter(connect(mapStateToProps)(Tweet));
