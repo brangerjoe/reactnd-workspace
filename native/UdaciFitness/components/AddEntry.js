@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import { SubmitEntry, RemoveEntry } from '../utils/api'
@@ -7,6 +8,7 @@ import UdaciSlider from './UdaciSlider'
 import UdaciStepper from './UdaciStepper'
 import DateHeader from './DateHeader';
 import TextButton from './TextButton';
+import { addEntry } from '../actions'
 
 function SubmitButton({ onSubmit }) {
     return (
@@ -59,6 +61,11 @@ class AddEntry extends Component {
     submit = () => {
         const key = timeToString()
         const entry = this.state
+        const { dispatch } = this.props
+
+        dispatch(addEntry({
+            [key]: entry
+        }))
 
         this.setState({
             run: 0,
@@ -73,6 +80,13 @@ class AddEntry extends Component {
 
     reset = () => {
         const key = timeToString()
+        const { dispatch } = this.props
+
+        dispatch(addEntry({
+            [key]: {
+                today: '► Don\'t remember to add an entry!'
+            }
+        }))
 
         RemoveEntry(key)
     }
@@ -86,7 +100,7 @@ class AddEntry extends Component {
                 <View>
                     <Ionicons name='ios-happy-outline' size={50} />
                     <Text>You already logged info today.</Text>
-                    <TextButton onPress={reset}>
+                    <TextButton onPress={this.reset}>
                         Clear
                     </TextButton>
                 </View>
@@ -125,4 +139,12 @@ class AddEntry extends Component {
     }
 }
 
-export default AddEntry
+function mapStateToProps(state) {
+    const key = timeToString()
+
+    return {
+        alreadyLogged: state[key] && typeof state[key].today === 'undefined'
+    }
+}
+
+export default connect(mapStateToProps)(AddEntry)
