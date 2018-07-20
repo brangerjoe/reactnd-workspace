@@ -1,22 +1,28 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import { SubmitEntry, RemoveEntry } from '../utils/api'
+import { white, purple } from '../utils/colors'
 import UdaciSlider from './UdaciSlider'
 import UdaciStepper from './UdaciStepper'
-import DateHeader from './DateHeader';
-import TextButton from './TextButton';
+import DateHeader from './DateHeader'
+import TextButton from './TextButton'
 import { addEntry } from '../actions'
 
 function SubmitButton({ onSubmit }) {
     return (
-        <TouchableOpacity onPress={onSubmit}>
-            <Text>Submit</Text>
+        <TouchableOpacity 
+        style={Platform.OS === 'ios'
+        ? styles.iosSubmitBtn
+        : styles.androidSubmitBtn }
+        onPress={onSubmit}>
+            <Text style={styles.submitBtnText}>Submit</Text>
         </TouchableOpacity>
     )
 }
+
 class AddEntry extends Component {
     state = {
         run: 10,
@@ -108,7 +114,7 @@ class AddEntry extends Component {
         }
 
         return (
-            <View>
+            <View style={styles.container}>
                 <Text>{JSON.stringify(this.state)}</Text>
                 <DateHeader date={(new Date()).toLocaleDateString()} />
                 <Text>Add Entries!</Text>
@@ -118,7 +124,7 @@ class AddEntry extends Component {
                     const value = this.state[metric]
 
                     return (
-                        <View key={metric}>{getIcon()}
+                        <View key={metric} style={styles.row}>{getIcon()}
                             {type === 'slider'
                                 ? <UdaciSlider
                                     value={value}
@@ -138,6 +144,40 @@ class AddEntry extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20,
+        backgroundColor: white
+    },
+    row: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    iosSubmitBtn: {
+        backgroundColor: purple,
+        borderRadius: 8,
+        height: 45,
+        marginLeft: 40,
+        marginRight: 40,
+        padding: 10
+    },
+    androidSubmitBtn: {
+        backgroundColor: purple,
+        borderRadius: 4,
+        height: 45,
+        marginLeft: 30,
+        marginRight: 30,
+        padding: 10,
+    },
+    submitBtnText: {
+        color: white,
+        fontSize: 22,
+        textAlign: 'center'
+    }
+})
 
 function mapStateToProps(state) {
     const key = timeToString()
