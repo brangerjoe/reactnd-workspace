@@ -7,6 +7,7 @@ export default function UdaciStepper({ value, onIncrement, onDecrement, max, uni
     return (
         <View style={[styles.row, { justifyContent: 'space-between' }]}>
             <View style={{ flexDirection: 'row' }}>
+                {/* Making the middle border radius 0 */}
                 <TouchableOpacity
                     style={[styles.button, { borderBottomRightRadius: 0, borderTopRightRadius: 0 }]}
                     onPress={onIncrement}>

@@ -1,16 +1,16 @@
-export const RECEIVE_DATA = 'RECEIVE_DATA'
+export const RECEIVE_ENTRIES = 'RECEIVE_ENTRIES'
 export const ADD_ENTRY = 'ADD_ENTRY'
 
-export function receiveData(data) {
+export function receiveEntries(entries) {
     return {
-        type: RECEIVE_DATA,
-        data
+        type: RECEIVE_ENTRIES,
+        entries,
     }
 }
 
 export function addEntry(entry) {
     return {
         type: ADD_ENTRY,
-        entry
+        entry,
     }
 }

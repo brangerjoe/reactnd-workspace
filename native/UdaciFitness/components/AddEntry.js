@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native
 import { connect } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
-import { SubmitEntry, RemoveEntry } from '../utils/api'
+import { submitEntry, removeEntry } from '../utils/api'
 import { white, purple } from '../utils/colors'
 import UdaciSlider from './UdaciSlider'
 import UdaciStepper from './UdaciStepper'
@@ -81,7 +81,7 @@ class AddEntry extends Component {
             eat: 0
         })
 
-        SubmitEntry({ key, entry })
+        submitEntry({ key, entry })
     }
 
     reset = () => {
@@ -94,7 +94,7 @@ class AddEntry extends Component {
             }
         }))
 
-        RemoveEntry(key)
+        removeEntry(key)
     }
 
     render() {
@@ -103,11 +103,11 @@ class AddEntry extends Component {
 
         if (alreadyLogged) {
             return (
-                <View>
-                    <Ionicons name='ios-happy-outline' size={50} />
+                <View style={styles.center}>
+                    <Ionicons name='md-happy' size={100} />
                     <Text>You already logged info today.</Text>
                     <TextButton onPress={this.reset}>
-                        Clear
+                        Reset
                     </TextButton>
                 </View>
             )
@@ -115,9 +115,7 @@ class AddEntry extends Component {
 
         return (
             <View style={styles.container}>
-                <Text>{JSON.stringify(this.state)}</Text>
                 <DateHeader date={(new Date()).toLocaleDateString()} />
-                <Text>Add Entries!</Text>
                 {Object.keys(metaInfo).map((metric) => {
                     // ...rest refers to the other object props in metaInfo (max, unit, etc)
                     const { getIcon, type, ...rest } = metaInfo[metric]
@@ -171,11 +169,17 @@ const styles = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         padding: 10,
+        justifyContent: 'center'
     },
     submitBtnText: {
         color: white,
         fontSize: 22,
         textAlign: 'center'
+    },
+    center: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     }
 })
 

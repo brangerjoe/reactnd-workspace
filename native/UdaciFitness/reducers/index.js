@@ -1,11 +1,11 @@
-import { RECEIVE_DATA, ADD_ENTRY } from '../actions'
+import { RECEIVE_ENTRIES, ADD_ENTRY } from '../actions'
 
-export default function entries(state = {}, action) {
+function entries(state = {}, action) {
     switch (action.type) {
-        case RECEIVE_DATA:
+        case RECEIVE_ENTRIES:
             return {
                 ...state,
-                ...action.entries
+                ...action.entries,
             }
         case ADD_ENTRY:
             return {
@@ -13,6 +13,8 @@ export default function entries(state = {}, action) {
                 ...action.entry
             }
         default:
-            return state;
+            return state
     }
 }
+
+export default entries

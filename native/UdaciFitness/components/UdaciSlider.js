@@ -1,21 +1,36 @@
 import React from 'react'
-import { Text, View, Slider } from 'react-native'
+import { Text, View, Slider, StyleSheet } from 'react-native'
+import { gray } from '../utils/colors'
 
 // Arguments: destructuring from props
 export default function UdaciSlider({ value, onChange, max, unit, step }) {
     return (
-        <View>
+        <View style={styles.row}>
             <Slider
+                style={{flex: 1}}
                 value={value}
                 onValueChange={onChange}
                 maximumValue={max}
                 step={step}
             />
-            <View>
-                <Text>
-                    {value} {unit}
-                </Text>
+            <View style={styles.metricCounter}>
+                <Text style={{fontSize: 24, textAlign: 'center'}}>{value}</Text>
+                <Text style={{fontSize: 18, color: gray}}>{unit}</Text>
+
             </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center'
+    },
+    metricCounter: {
+        width: 80,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
