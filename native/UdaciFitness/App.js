@@ -1,13 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, StatusBar } from 'react-native'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { createMaterialTopTabNavigator } from 'react-navigation'
+import { createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import AddEntry from './components/AddEntry'
 import History from './components/History'
+import EntryDetails from './components/EntryDetails'
 import reducer from './reducers'
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { purple, white } from './utils/colors';
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { purple, white } from './utils/colors'
 import { Constants } from 'expo'
 
 const UdaciStatusBar = ({ backgroundColor, ...props }) => {
@@ -42,15 +43,32 @@ const Tabs = createMaterialTopTabNavigator({
         backgroundColor: purple
       }
     }
-  })
+  }
+)
+
+// DrawerNavigator also exists
+const MainNavigation = createStackNavigator({
+  Home: {
+    screen: Tabs
+  },
+  EntryDetails: {
+    screen: EntryDetails,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  }
+})
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{ flex: 1 }}>
-          <UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
-          <Tabs />
+          {/* <UdaciStatusBar backgroundColor={purple} barStyle='light-content' /> */}
+          <MainNavigation />
         </View>
       </Provider>
     );

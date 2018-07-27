@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native'
 import { connect } from 'react-redux'
+import { NavigationActions } from 'react-navigation'
 import { Ionicons } from '@expo/vector-icons'
 import { getMetricMetaInfo, timeToString } from '../utils/helpers'
 import { submitEntry, removeEntry } from '../utils/api'
@@ -81,6 +82,8 @@ class AddEntry extends Component {
             eat: 0
         })
 
+        this.toHome()
+
         submitEntry({ key, entry })
     }
 
@@ -94,7 +97,17 @@ class AddEntry extends Component {
             }
         }))
 
+        this.toHome()
+
         removeEntry(key)
+    }
+
+    toHome = () => {
+        const { navigation } = this.props
+
+        navigation.dispatch(NavigationActions.back({
+            key: 'AddEntry'
+        }))
     }
 
     render() {
